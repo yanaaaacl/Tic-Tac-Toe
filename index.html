@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="images" href="./img/1.svg">
     <title>Tic Tac Toe</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,54 +21,58 @@
         </header>
         <main class="main">
             <div class="container">
-                <section class="buttons-players">
-                    <button type="button" class="players player-user">With Friend</button>
-                    <button type="button" class="players player-computer">With Computer</button>
-                </section>
-                <section class="change">
-                    <div class="change-your change-group">
-                        <input id="inp-name" class="inp" type="text" value="Your Name">
-                        <div class="avatar">
-                            <h3 class="change-title">Your Avatar</h3>
-                            <div class="group-icons">
-                                <img src="./img/astronaut-white-left.svg" alt="img" class="icon icon-one">
-                                <img src="./img/cat-avatar-white-left.svg" alt="img" class="icon icon-two">
+                <div class="container-section">
+                    <section class="buttons-players">
+                        <button type="button" class="players player-user">With Friend</button>
+                        <button type="button" class="players player-computer">With Computer</button>
+                    </section>
+                    <section class="change">
+                        <div class="change-your change-group">
+                            <input id="inp-name" class="inp" type="text" value="Your Name" onfocus="this.value=''">
+                            <div class="avatar">
+                                <h3 class="change-title">Your Avatar</h3>
+                                <div class="group-icons group-icons-user--avatar">
+                                    <img src="./img/white1.svg" alt="img" class="icon icon-one">
+                                    <img src="./img/white2.svg" alt="img" class="icon icon-two">
+                                </div>
+                            </div>
+                            <div class="mark">
+                                <h3 class="change-title">Your Mark</h3>
+                                <div class="group-icons group-icons-user--mark">
+                                    <img src="./img/white3.svg" alt="img" class="icon icon-three">
+                                    <img src="./img/white4.svg" alt="img" class="icon icon-four">
+                                </div>
                             </div>
                         </div>
-                        <div class="mark">
-                            <h3 class="change-title">Your Mark</h3>
-                            <div class="group-icons">
-                                <img src="./img/rocket-white-left.svg" alt="img" class="icon icon-three">
-                                <img src="./img/comet-white-left.svg" alt="img" class="icon icon-four">
+                        <div class="change-topic">
+                            <h3 class="topic-title">Themes</h3>
+                            <button type="button" class="btn-topic btn-topic-one">Andromeda</button>
+                            <button type="button" class="btn-topic btn-topic-two">Star</button>
+                            <button type="button" class="btn-topic btn-topic-three">Way</button>
+                            <button type="button" class="btn-topic btn-topic-four">BlackFire</button>
+                        </div>
+                        <div class="change-user change-group">
+                            <input id="inp-user" class="inp" type="text" value="Enemy Name" onfocus="this.value=''">
+                            <div class="avatar">
+                                <h3 class="change-title">Your Avatar</h3>
+                                <div class="group-icons group-icons-enemy--avatar">
+                                    <img src="./img/white5.svg" alt="img" class="icon icon-five">
+                                    <img src="./img/white6.svg" alt="img" class="icon icon-six">
+                                </div>
+                            </div>
+                            <div class="mark">
+                                <h3 class="change-title">Your Mark</h3>
+                                <div class="group-icons group-icons-enemy--mark">
+                                    <img src="./img/white7.svg" alt="img" class="icon icon-seven">
+                                    <img src="./img/white8.svg" alt="img" class="icon icon-eight">
+                                </div>
                             </div>
                         </div>
+                    </section>
+                    <div class="section-btn-winText">
+                        <button class="play">Play</button>
                     </div>
-                    <div class="change-topic">
-                        <h3 class="topic-title">Themes</h3>
-                        <button type="button" class="btn-topic btn-topic-one">Andromeda</button>
-                        <button type="button" class="btn-topic btn-topic-two">Star</button>
-                        <button type="button" class="btn-topic btn-topic-three">Way</button>
-                        <button type="button" class="btn-topic btn-topic-four">BlackFire</button>
-                    </div>
-                    <div class="change-user change-group">
-                        <input id="inp-user" class="inp" type="text" value="Enemy Name">
-                        <div class="avatar">
-                            <h3 class="change-title">Your Avatar</h3>
-                            <div class="group-icons">
-                                <img src="./img/unicorn-white-right.svg" alt="img" class="icon icon-five">
-                                <img src="./img/cowboy-white-right.svg" alt="img" class="icon icon-six">
-                            </div>
-                        </div>
-                        <div class="mark">
-                            <h3 class="change-title">Your Mark</h3>
-                            <div class="group-icons">
-                                <img src="./img/asteroid-white-right.svg" alt="img" class="icon icon-seven">
-                                <img src="./img/shooting-star-white-right.svg" alt="img" class="icon icon-eight">
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <button type="button" class="play">Play</button>
+                </div>
             </div>
         </main>
         <footer class="footer">

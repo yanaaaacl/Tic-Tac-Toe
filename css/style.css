@@ -108,7 +108,7 @@ body {
     text-align: center;
 }
 
-.inp {
+.inp, .inp::placeholder {
     border-bottom: 1px solid #fff;
     background-color: transparent;
     border-top: none;
@@ -209,4 +209,27 @@ body {
     border: 1px solid #000;
     width: 100px;
     height: 100px;
+    
+}
+
+.text-winner{
+    color: #fff;
+    font-size: 30px;
+    font-family: 'Roboto', sans-serif;
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.newGame{
+    display: block;
+    border: 2px solid #fff;
+    text-align: center;
+    background-color: transparent;
+    color: #fff;
+    font-size: 25px;
+    padding: 10px 10px;
+    width: 200px;
+    margin: 0 auto;
 }
