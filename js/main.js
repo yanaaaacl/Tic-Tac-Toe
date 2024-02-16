@@ -1,14 +1,52 @@
+function CreatePlayer() {
+    let name;
+    let mark;
+    let avatar;
 
-function CreatePlayer(name, avatar, mark) {
+    function getPlayer(name, avatar, mark) {
+        this.name = name;
+        this.avatar = avatar;
+        this.mark = mark;
+
+        let player = document.querySelector(this.name);
+        let groupIconsAvatar = document.querySelector(this.avatar);
+        let groupIconsMark = document.querySelector(this.mark);
+
+        let createInter = CreateInterface();
+
+        const getNameAvatarMarkUser = function () {
+
+            createInter.btnPlay.addEventListener('click', () => {
+
+                if (astronaut.src != avatar) {
+                    groupIconsAvatar.removeChild(astronaut);
+                } else if (cat.src != avatar) {
+                    groupIconsAvatar.removeChild(cat);
+                }
+
+                if (rocket.src != mark) {
+                    groupIconsMark.removeChild(rocket);
+                } else if (comet.src != mark) {
+                    groupIconsMark.removeChild(comet);
+                }
+            })
+        }
+
+        return getNameAvatarMarkUser();
+    }
+
     return {
         name,
         avatar,
-        mark
+        mark,
+        getPlayer
     };
 }
 
 function CreateInterface() {
     let btnPlay = document.querySelector('.play');
+
+    let playerButtons = document.querySelector('.buttons-players');
 
     let sectionChange = document.querySelector('.change');
     let changeTopic = document.querySelector('.change-topic');
@@ -22,6 +60,8 @@ function CreateInterface() {
     const removeChangeBackImg = () => {
         btnPlay.addEventListener('click', () => {
             sectionChange.removeChild(changeTopic);
+            playerButtons.style.display = 'none';
+
         })
     }
 
@@ -191,6 +231,87 @@ function getPlayerEnemy() {
     return getNameAvatarMarkEnemy();
 }
 
+let createPlayerComputer = CreatePlayer('', '', '');
+
+let dart = document.querySelector('.icon-nine')
+let cowboyTwo = document.querySelector('.icon-ten');
+let sword = document.querySelector('.icon-eleven');
+let swordTwo = document.querySelector('.icon-twelve');
+
+let avatarComp = '';
+let markComp = '';
+
+function ChangeAvatarAndMarkComp() {
+    let changeImgAuto = getButtons();
+    let arr1 = [dart, cowboyTwo];
+    let arr2 = [sword, swordTwo];
+    const changeImagesOnColorComp = function () {
+        changeImgAuto.btnPlayComp.addEventListener('click', function () {
+            let randomAvatar = Math.floor(Math.random() * arr1.length);
+            console.log(randomAvatar);
+            if (randomAvatar == 0) {
+                dart.src = "img/" + '9' + ".svg";
+                avatarComp = dart.src;
+            } else if (randomAvatar == 1) {
+                cowboyTwo.src = "img/" + '10' + ".svg";
+                avatarComp = cowboyTwo.src;
+            }
+            let randomMark = Math.floor(Math.random() * arr2.length);
+            if (randomMark == 0) {
+                sword.src = "img/" + '11' + ".svg";
+                markComp = sword.src;
+            } else if (randomMark == 1) {
+                swordTwo.src = "img/" + '12' + ".svg";
+                markComp = swordTwo.src;
+            }
+
+        })
+    }
+    return changeImagesOnColorComp();
+}
+
+function getPlayerComp() {
+
+    let playerComp = document.querySelector('#inp-computer');
+
+    let groupIconsCompAvatar = document.querySelector('.group-icons-computer--avatar');
+    let groupIconsCompMark = document.querySelector('.group-icons-computer--mark');
+
+    let createInter = CreateInterface();
+
+    const getNameAvatarMarkComp = function () {
+        createInter.btnPlay.addEventListener('click', () => {
+            createPlayerComputer.name = playerComp.value;
+            createPlayerComputer.avatar = avatarComp;
+            createPlayerComputer.mark = markComp;
+
+            if (dart.src != avatarComp) {
+                groupIconsCompAvatar.removeChild(dart);
+            } else if (cowboyTwo.src != avatarComp) {
+                groupIconsCompAvatar.removeChild(cowboyTwo);
+            }
+
+            if (sword.src != markComp) {
+                groupIconsCompMark.removeChild(sword);
+            } else if (swordTwo.src != markComp) {
+                groupIconsCompMark.removeChild(swordTwo);
+            }
+        })
+    }
+    return getNameAvatarMarkComp();
+}
+
+function getButtons() {
+    let btnPlayUser = document.querySelector('.player-user');
+    let btnPlayComp = document.querySelector('.player-computer');
+    let changeComp = document.querySelector('.change-computer');
+    let changeUs = document.querySelector('.change-user');
+    let textBtnComp = btnPlayUser.textContent;
+    return { textBtnComp, btnPlayUser, btnPlayComp, changeComp, changeUs };
+}
+
+
+
 function GameBoard() {
 
     let createInter = CreateInterface();
@@ -200,21 +321,25 @@ function GameBoard() {
 
     let fragment = new DocumentFragment();
 
-
     const createNewBlockSquare = () => {
         createInter.btnPlay.addEventListener('click', () => {
-           
+
             for (let i = 0; i < 9; i++) {
-                let displaySquare = document.createElement('div');
-                displaySquare.classList.add('display-square');
-                displaySquare.addEventListener('click', () => {
+                gameController.displaySquares[i] = document.createElement('div');
+                gameController.displaySquares[i].classList.add('display-square');
+                gameController.displaySquares[i].addEventListener('click', () => {
                     if (!gameController.gameWasEnd) {
-                        PlayerMove(gameController.playerNumber, i, displaySquare, gameController);
+                        PlayerMove(gameController.playerNumber, i, gameController.displaySquares[i], gameController);
                         gameController.checkEndGame();
-                        gameController.playerNumber = (gameController.playerNumber == 1) ? 2 : 1
+                        gameController.playerNumber = (gameController.playerNumber == 1) ? 2 : 1;
+                        if (gameController.createGetButtons.textBtnComp == 'With Computer') {
+                            ComputerMove(gameController)
+                            gameController.checkEndGame();
+                            gameController.playerNumber = (gameController.playerNumber == 1) ? 2 : 1;
+                        }
                     }
                 })
-                fragment.appendChild(displaySquare);
+                fragment.appendChild(gameController.displaySquares[i]);
             }
             changeDisplay.appendChild(fragment);
             createInter.sectionChange.insertBefore(changeDisplay, createInter.sectionChange.children[1]);
@@ -234,55 +359,79 @@ function TheCourseOfTheGame() {
     textFindWinner.classList.add('text-winner');
 
     let createInter = CreateInterface();
+    let createGetButtons = getButtons();
+    createGetButtons.btnPlayComp.addEventListener('click', function () {
+        createGetButtons.textBtnComp = createGetButtons.btnPlayComp.textContent;
+        createGetButtons.changeComp.style.display = 'block';
+        createGetButtons.changeUs.style.display = 'none';
+    })
+    createGetButtons.btnPlayUser.addEventListener('click', function () {
+        createGetButtons.textBtnComp = createGetButtons.btnPlayUser.textContent;
+        createGetButtons.changeComp.style.display = 'none';
+        createGetButtons.changeUs.style.display = 'block';
+    })
 
     let gameWasEnd = false;
     let playerNumber = 1;
     let field = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let displaySquares = [null,null,null,null,null,null,null,null,null]
 
-    let checkEndGame = () => {
-        if (
-            (this.field[0] === playerNumber && this.field[1] === playerNumber && this.field[2] === playerNumber) ||
-            (this.field[3] === playerNumber && this.field[4] === playerNumber && this.field[5] === playerNumber) ||
-            (this.field[6] === playerNumber && this.field[7] === playerNumber && this.field[8] === playerNumber) ||
-            (this.field[0] === playerNumber && this.field[3] === playerNumber && this.field[6] === playerNumber) ||
-            (this.field[1] === playerNumber && this.field[4] === playerNumber && this.field[7] === playerNumber) ||
-            (this.field[2] === playerNumber && this.field[5] === playerNumber && this.field[8] === playerNumber) ||
-            (this.field[0] === playerNumber && this.field[4] === playerNumber && this.field[8] === playerNumber) ||
-            (this.field[2] === playerNumber && this.field[4] === playerNumber && this.field[6] === playerNumber)) {
-            if (playerNumber == 1) {
-                textFindWinner.textContent = createPlayerUser.name + " win!";
-                createInter.container.insertBefore(textFindWinner, createInter.container.children[0]);
-            }
-            else {
-                textFindWinner.textContent = "You're lost! " + createPlayerEnemy.name + " win";
-                createInter.container.insertBefore(textFindWinner, createInter.container.children[0]);
-            }
-            gameWasEnd = true;
-        } else {
-            let zero = 0;
-            for (let i = 0; i < 9; i++) {
-                if (this.field[i] == 0) {
-                    zero++
+    function checkEndGame() {
+        for(let i = 1; i <= 2; i++) {
+            if (
+                (this.field[0] === i && this.field[1] === i && this.field[2] === i) ||
+                (this.field[3] === i && this.field[4] === i && this.field[5] === i) ||
+                (this.field[6] === i && this.field[7] === i && this.field[8] === i) ||
+                (this.field[0] === i && this.field[3] === i && this.field[6] === i) ||
+                (this.field[1] === i && this.field[4] === i && this.field[7] === i) ||
+                (this.field[2] === i && this.field[5] === i && this.field[8] === i) ||
+                (this.field[0] === i && this.field[4] === i && this.field[8] === i) ||
+                (this.field[2] === i && this.field[4] === i && this.field[6] === i)) {
+                if (i == 1) {
+                    textFindWinner.textContent = createPlayerUser.name + " win!";
+                    createInter.container.insertBefore(textFindWinner, createInter.container.children[0]);
                 }
-            }
-            if (zero == 0) {
-                textFindWinner.textContent = createPlayerEnemy.name + " and " + createPlayerUser.name + " have a draw";
-                createInter.container.insertBefore(textFindWinner, createInter.container.children[0]);
+                else if (i == 2 && createGetButtons.textBtnComp == 'With Friend') {
+                    textFindWinner.textContent = "You're lost! " + createPlayerEnemy.name + " win";
+                    createInter.container.insertBefore(textFindWinner, createInter.container.children[0]);
+                }
+                else if (i == 2 && createGetButtons.textBtnComp == 'With Computer') {
+                    textFindWinner.textContent = "You're lost! " + createPlayerComputer.name + " win";
+                    createInter.container.insertBefore(textFindWinner, createInter.container.children[0]);
+                }
                 this.gameWasEnd = true;
+        }
+        let zero = 0;
+        for (let i = 0; i < 9; i++) {
+            if (this.field[i] == 0) {
+                zero++
             }
+        }
+        if (zero == 0 && createGetButtons.textBtnComp == 'With Friend') {
+            textFindWinner.textContent = createPlayerEnemy.name + " and " + createPlayerUser.name + " have a draw";
+            createInter.container.insertBefore(textFindWinner, createInter.container.children[0]);
+            this.gameWasEnd = true;
+        } else if (zero == 0 && createGetButtons.textBtnComp == 'With Computer') {
+            textFindWinner.textContent = createPlayerComputer.name + " and " + createPlayerUser.name + " have a draw";
+            createInter.container.insertBefore(textFindWinner, createInter.container.children[0]);
+            this.gameWasEnd = true;
+        }
         }
     }
 
-    return({gameWasEnd, playerNumber, field, checkEndGame});
+    return ({ gameWasEnd, playerNumber, field, checkEndGame, textFindWinner, createGetButtons, displaySquares });
 }
 
 let countUser = 0;
 let countEnemy = 1;
 
 function PlayerMove(playerNumber, square_number, displaySquare, gameController) {
+
     if (gameController.field[square_number] != 0) {
         return;
     }
+
+
 
     let Img = document.createElement('img');
     Img.classList.add('icon');
@@ -290,12 +439,36 @@ function PlayerMove(playerNumber, square_number, displaySquare, gameController) 
         Img.src = markUser;
         gameController.field[square_number] = 1;
         countUser += 1;
-    } else if (playerNumber == 2) {
+
+
+    } else if (playerNumber == 2 && gameController.createGetButtons.textBtnComp == 'With Friend') {
         Img.src = markEnemy;
         gameController.field[square_number] = 2;
         countEnemy += 1;
+
     }
     displaySquare.appendChild(Img);
+}
+
+
+function ComputerMove(gameController) {
+    if (gameController.gameWasEnd) {
+        return;
+    }
+
+    let randSquare = -1;
+    do {
+        randSquare = Math.floor(Math.random() * 9)
+        console.log(randSquare)
+        console.log(gameController.field[randSquare])
+    } while(gameController.field[randSquare] != 0)
+
+    let Img = document.createElement('img');
+    Img.classList.add('icon');
+    Img.src = markComp;
+    gameController.field[randSquare] = 2;
+    countEnemy += 1;
+    gameController.displaySquares[randSquare].appendChild(Img);
 }
 
 
@@ -327,8 +500,10 @@ function changeBackImg() {
 CreateInterface();
 changeBackImg();
 GameBoard();
-ChangeAvatarAndMarkUser()
 getPlayerUser();
-ChangeAvatarAndMarkEnemy()
 getPlayerEnemy();
-TheCourseOfTheGame();
+ChangeAvatarAndMarkUser();
+ChangeAvatarAndMarkEnemy();
+getButtons();
+ChangeAvatarAndMarkComp();
+getPlayerComp();
